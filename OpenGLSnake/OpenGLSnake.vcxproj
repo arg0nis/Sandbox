@@ -159,16 +159,19 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\shader.cpp" />
+    <ClCompile Include="src\stbInit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BackEnd.h" />
     <ClInclude Include="include\camera.h" />
     <ClInclude Include="include\cube.h" />
     <ClInclude Include="include\colors.h" />
+    <ClInclude Include="include\Floor.h" />
     <ClInclude Include="include\Input.h" />
     <ClInclude Include="include\keycodes.h" />
     <ClInclude Include="include\Renderer.h" />
     <ClInclude Include="include\shader.h" />
+    <ClInclude Include="include\Texture.h" />
     <ClInclude Include="include\utils.h" />
   </ItemGroup>
   <ItemGroup>

@@ -11,16 +11,15 @@
 #include "../include/colors.h"
 #include "../include/shader.h"
 #include "../include/cube.h"
+#include "../include/Floor.h"
 
 
 
 namespace Renderer {
 	Camera _camera;
 	Shader _shader;
-	Cube cube1;
-	Cube cube2;
-
 	Cube _cubes[2];
+	Floor _floor;
 
 	glm::vec3 _cameraPosition;
 	float _deltaFrame;
@@ -41,15 +40,16 @@ namespace Renderer {
 		_camera = Camera(cameraPos);
 		_shader = Shader("shaderSource.vert", "shaderSource.frag");
 		_shader.use();
-		_shader.setVec3("color", PINK);
+		_shader.setVec3("color", BLACK);
 		_cameraPosition = cameraPos;
 		_window = BackEnd::GetWindowPointer();
-		utils::setClearColor(BLACK, 1.f);
+		utils::setClearColor(WHITE, 1.f);
 
 		glEnable(GL_DEPTH_TEST);
 		
 		_cubes[0] = Cube(glm::vec3(.0f, .0f, .0f), glm::vec3(1.f, 1.f, 1.f));
 		_cubes[1] = Cube(glm::vec3(3.0f, .0f, .0f), glm::vec3(1.f, 2.f, 1.f));
+		_floor = Floor(glm::vec3(20.f, 20.f, 20.f));
 	}
 	
 	void Render() {
@@ -64,6 +64,8 @@ namespace Renderer {
 		for (Cube cube : _cubes) {
 			cube.render(_shader);
 		}
+
+		_floor.Draw(_shader);
 	}
 
 	void CleanUp() {
@@ -71,6 +73,7 @@ namespace Renderer {
 			cube.CleanUp();
 		}
 		_shader.CleanUp();
+		_floor.CleanUp();
 	}
 
 	void Update() {
