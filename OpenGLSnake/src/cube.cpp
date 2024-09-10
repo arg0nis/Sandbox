@@ -46,12 +46,6 @@ Cube::Cube(const glm::vec3& position, const glm::vec3& size) : position{ positio
 	updateTransform();
 };
 
-Cube::~Cube() {
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
-}
-
 void Cube::updateTransform() {
 	modelMat = glm::translate(glm::mat4(1.f), position);
 	modelMat = glm::scale(modelMat, size);
@@ -67,6 +61,13 @@ void Cube::render(Shader& shader) const {
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+}
+
+void Cube::CleanUp() {
+	utils::log_info("Destroying cube");
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
 }
 
 void Cube::setPosition(const glm::vec3& newPos) {

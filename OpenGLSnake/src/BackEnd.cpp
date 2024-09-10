@@ -69,6 +69,11 @@ namespace BackEnd {
 		//calculateFPS();
 	}
 
+	void CleanUp() {
+		glfwTerminate();
+		glfwDestroyWindow(_window);
+	}
+
 	void initGlad() {
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 			utils::log_error("Failed to initialize GLAD");

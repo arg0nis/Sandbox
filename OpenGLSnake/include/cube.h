@@ -9,8 +9,9 @@
 class Cube {
 public:
 	Cube(const glm::vec3& position, const glm::vec3& size);
-	~Cube();
 	Cube() = default;
+
+	void CleanUp();
 
 	void render(Shader& shader)const;
 	void setPosition(const glm::vec3& position);

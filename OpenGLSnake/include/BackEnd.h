@@ -4,6 +4,7 @@
 namespace BackEnd {
 	void Init();
 	void Update();
+	void CleanUp();
 
 	int GetWindowWidth();
 	int GetWindowHeight();

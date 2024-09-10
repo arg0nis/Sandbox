@@ -9,6 +9,7 @@ namespace Input {
 	double GetMouseOffsetX();
 	double GetMouseOffsetY();
 	double GetScrollOffset();
-	double GetMouseWheelValue();
+	//double GetMouseWheelValue();
+	bool Scrolled();
 	bool GetKeyPressed(int key);
 }

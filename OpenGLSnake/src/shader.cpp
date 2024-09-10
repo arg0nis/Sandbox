@@ -19,9 +19,11 @@ Shader::Shader(const std::string& vertPath, const std::string& fragPath) {
 	glShaderSource(fragment, 1, &fragSrc, NULL);
 
 	glCompileShader(vertex);
-	checkForErrors(vertex, "VERTEX");
+	if(checkForErrors(vertex, "VERTEX"))
+		utils::log_info("Compiled vertex shader");
 	glCompileShader(fragment);
-	checkForErrors(fragment, "FRAGMENT");
+	if(checkForErrors(vertex, "FRAGMENT"))
+		utils::log_info("Compiled vertex shader");
 
 	ID = glCreateProgram();
 	glAttachShader(ID, vertex);
@@ -34,14 +36,16 @@ Shader::Shader(const std::string& vertPath, const std::string& fragPath) {
 
 }
 
-Shader::~Shader() {
+void Shader::CleanUp() {
+	std::string cleanUpMessage = "Deleting shader program with ID " + std::to_string(ID);
+	utils::log_info(cleanUpMessage.c_str());
 	glDeleteProgram(ID);
 }
 
 void Shader::use() const {
 	glUseProgram(ID);
-//	utils::log_info(vertCode.c_str());
-//	utils::log_info(fragCode.c_str());
+	//utils::log_info(vertCode.c_str());
+	//utils::log_info(fragCode.c_str());
 }
 
 int Shader::checkForErrors(const unsigned int shader, const std::string type) {

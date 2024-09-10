@@ -20,6 +20,8 @@ namespace Renderer {
 	Cube cube1;
 	Cube cube2;
 
+	Cube _cubes[2];
+
 	glm::vec3 _cameraPosition;
 	float _deltaFrame;
 	float _lastFrame;
@@ -39,14 +41,15 @@ namespace Renderer {
 		_camera = Camera(cameraPos);
 		_shader = Shader("shaderSource.vert", "shaderSource.frag");
 		_shader.use();
+		_shader.setVec3("color", PINK);
 		_cameraPosition = cameraPos;
 		_window = BackEnd::GetWindowPointer();
 		utils::setClearColor(BLACK, 1.f);
 
 		glEnable(GL_DEPTH_TEST);
 		
-		cube1 = Cube(glm::vec3(.0f, .0f, .0f), glm::vec3(1.f, 1.f, 1.f));
-		cube2 = Cube(glm::vec3(3.0f, .0f, .0f), glm::vec3(1.f, 2.f, 1.f));
+		_cubes[0] = Cube(glm::vec3(.0f, .0f, .0f), glm::vec3(1.f, 1.f, 1.f));
+		_cubes[1] = Cube(glm::vec3(3.0f, .0f, .0f), glm::vec3(1.f, 2.f, 1.f));
 	}
 	
 	void Render() {
@@ -57,15 +60,23 @@ namespace Renderer {
 		_shader.use();
 		_shader.setMat4("view", view);
 		_shader.setMat4("projection", projection);
-		_shader.setVec3("color", RED);
 
-		cube1.render(_shader);
-		cube2.render(_shader);
+		for (Cube cube : _cubes) {
+			cube.render(_shader);
+		}
+	}
+
+	void CleanUp() {
+		for (Cube cube : _cubes) {
+			cube.CleanUp();
+		}
+		_shader.CleanUp();
 	}
 
 	void Update() {
 		calculateDeltaTime();
 		handleMouseMovement();
+		handleMouseScroll();
 		handleKeyboard();
 		_windowWidth = BackEnd::GetWindowWidth();
 		_windowHeight = BackEnd::GetWindowHeight();
@@ -84,8 +95,10 @@ namespace Renderer {
 	};
 
 	void handleMouseScroll() {
-		float scrollOffset = static_cast<float>(Input::GetScrollOffset());
-		_camera.ProcessMouseScroll(scrollOffset);
+		if (Input::Scrolled()) {
+			float scrollOffset = static_cast<float>(Input::GetScrollOffset());
+			_camera.ProcessMouseScroll(scrollOffset);
+		}
 	};
 
 	float getDeltaTime() {

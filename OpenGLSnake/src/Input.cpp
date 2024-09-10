@@ -16,6 +16,7 @@ namespace Input {
 	double _mouseOffsetX;
 	double _mouseOffsetY;
 	double _scrollWheelYOffset;
+	bool _scrolled;
 	GLFWwindow* _window;
 
 	void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -57,6 +58,9 @@ namespace Input {
 			if (glfwGetKey(_window, i) == GLFW_PRESS) {
 				_keyPressed[i] = true;
 			}
+			else {
+				_keyPressed[i] = false;
+			}
 		}
 
 	}
@@ -76,16 +80,21 @@ namespace Input {
 		return _mouseOffsetY;
 	};
 	double GetScrollOffset() {
+		_scrolled = false;
 		return _scrollWheelYOffset;
+	}
+
+	bool Scrolled() {
+		return _scrolled;
 	}
 
 	bool GetKeyPressed(int key) {
 		return _keyPressed[key];
 	}
 
-
-
 	void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
 		_scrollWheelYOffset = yoffset;
+		_scrolled = true;
+		//utils::log_info(std::to_string(yoffset).c_str());
 	}
 }

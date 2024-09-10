@@ -1,6 +1,7 @@
 #include "../include/BackEnd.h"
 #include "../include/Input.h"
 #include "../include/Renderer.h"
+#include "../include/shader.h"
 
 int main() {
 	BackEnd::Init();
@@ -13,4 +14,10 @@ int main() {
 		Renderer::Update();
 		Renderer::Render();
 	}
+
+	std::cout << "\n";
+	Renderer::CleanUp();
+	BackEnd::CleanUp();
+
+	return 0;
 }
