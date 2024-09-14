@@ -4,7 +4,8 @@
 
 class Texture {
 public:
-	Texture(const char* &path) {
+	Texture() = default;
+	Texture(const char* path) {
 		data = stbi_load(path, &width, &height, &nrChannels, 0);
 
 		glGenTextures(1, &texture);
@@ -25,10 +26,9 @@ public:
 
 
 		stbi_image_free(data);
-
 	}
 
-	unsigned int id() {
+	unsigned int id() const {
 		return texture;
 	}
 

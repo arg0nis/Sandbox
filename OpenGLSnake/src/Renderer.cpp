@@ -18,7 +18,7 @@
 namespace Renderer {
 	Camera _camera;
 	Shader _shader;
-	Cube _cubes[2];
+	Cube _cubes[3];
 	Floor _floor;
 
 	glm::vec3 _cameraPosition;
@@ -40,16 +40,17 @@ namespace Renderer {
 		_camera = Camera(cameraPos);
 		_shader = Shader("shaderSource.vert", "shaderSource.frag");
 		_shader.use();
-		_shader.setVec3("color", BLACK);
+		_shader.setVec3("color", RED);
 		_cameraPosition = cameraPos;
 		_window = BackEnd::GetWindowPointer();
 		utils::setClearColor(WHITE, 1.f);
 
 		glEnable(GL_DEPTH_TEST);
 		
-		_cubes[0] = Cube(glm::vec3(.0f, .0f, .0f), glm::vec3(1.f, 1.f, 1.f));
-		_cubes[1] = Cube(glm::vec3(3.0f, .0f, .0f), glm::vec3(1.f, 2.f, 1.f));
-		_floor = Floor(glm::vec3(20.f, 20.f, 20.f));
+		_cubes[0] = Cube(glm::vec3(.0f, .0f, .0f), glm::vec3(1.f, 1.f, 1.f), true);
+		_cubes[1] = Cube(glm::vec3(3.0f, .0f, .0f), glm::vec3(1.f, 1.f, 1.f), true);
+		_cubes[2] = Cube(glm::vec3(5.0f, .0f, .0f), glm::vec3(1.f, 1.f, 1.f), false);
+		_floor = Floor(glm::vec3(10.f, 10.f, 10.f));
 	}
 	
 	void Render() {

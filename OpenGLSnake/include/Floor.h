@@ -2,15 +2,20 @@
 
 #include "utils.h"
 #include "shader.h"
+#include "Texture.h"
 
 class Floor {
 public:
 	Floor() = default;
+
+	Texture texture;
 	Floor(glm::vec3 size) {
 
 		modelMat = glm::translate(glm::mat4(1.f), glm::vec3(.0f, -2.0f, .0f));
 		modelMat = glm::scale(modelMat, size);
 		modelMat = glm::rotate(modelMat, glm::radians(90.f), glm::vec3(1.0f, .0f, .0f));
+
+		texture = Texture("floor.jpg");
 
 		glCreateBuffers(1, &VBO);
 		glCreateBuffers(1, &EBO);
@@ -24,8 +29,11 @@ public:
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices, GL_STATIC_DRAW);
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
+
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(1);
 
 		glBindVertexArray(0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -35,9 +43,12 @@ public:
 	void Draw(Shader &shader) {
 		shader.use();
 		shader.setMat4("model", modelMat);
+		shader.setBool("hasTexture", true);
+		glBindTexture(GL_TEXTURE_2D, texture.id());
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	void CleanUp() {
@@ -48,11 +59,11 @@ public:
 
 private:
 
-	float vertices[12]{
-		-.5f, .5f, .0f,		// Top left
-		.5f, .5f, .0f,		// Top right
-		-.5f, -.5f, .0f,	// Bottom left	
-		.5f, -.5f, .0f		// Bottom right
+	float vertices[20]{
+		-.5f, .5f, .0f,	.0f, 1.f,	// Top left
+		.5f, .5f, .0f, 1.f, 1.f,		// Top right
+		-.5f, -.5f, .0f, .0f, .0f,	// Bottom left	
+		.5f, -.5f, .0f, 1.f, .0f		// Bottom right
 	};
 
 
